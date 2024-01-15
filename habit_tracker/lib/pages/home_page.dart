@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habit_tracker/components/habit_tile.dart';
 import 'package:habit_tracker/components/my_fab.dart';
-import 'package:habit_tracker/components/new_habit_box.dart';
+import 'package:habit_tracker/components/my_alert_box.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -28,9 +28,10 @@ class _HomePageState extends State<HomePage> {
 //create new habit
   void createNewHabit() {
     showDialog(context: context, builder: (context){
-      return EnterNewHabitBox(
+      return MyAlertBox(
         controller: _newHabitController,
-        onCancel: onCancel,
+        hintText: "enter a habit",
+        onCancel: cancelDialogBox,
         onSave: onSave,
       );
     });
@@ -38,7 +39,6 @@ class _HomePageState extends State<HomePage> {
 //on save function
   void onSave(){
     //add habit to list
-    print(_newHabitController.text);
     setState(() {
       todayHabitList.add([_newHabitController.text, false]);
     });
@@ -49,13 +49,44 @@ class _HomePageState extends State<HomePage> {
     Navigator.of(context).pop();
   }
 // on cancel function
-  void onCancel(){
+  void cancelDialogBox(){
     //clear text feild
     _newHabitController.clear();
     //pop dialogbox
     Navigator.of(context).pop();
   }
 
+
+
+//edit tha habbit
+  void openHabitSettings(int index){
+    showDialog(
+      context: context,
+       builder: (context){
+        return MyAlertBox(
+        controller: _newHabitController,
+        hintText: todayHabitList[index][0],
+        onCancel: cancelDialogBox,
+        onSave: () => saveExistingHabit(index),
+        );
+       }
+    );
+  }
+
+  //editing a habit 
+  void saveExistingHabit(int index){
+    setState(() {
+      todayHabitList[index][0] = _newHabitController.text;
+    });
+    _newHabitController.clear();
+    Navigator.of(context).pop();
+  }
+// delete a habit
+  void deleteHabit(int index){
+    setState(() {
+      todayHabitList.removeAt(index);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,6 +101,8 @@ class _HomePageState extends State<HomePage> {
             habitName: todayHabitList[index][0],
             habitCompleted: todayHabitList[index][1],
             onchanged: (value) => checkBoxTapped(value, index),
+            settingTapped: (context) => openHabitSettings(index),
+            deleteTapped: (context) => deleteHabit(index),
           );
         }
         )      

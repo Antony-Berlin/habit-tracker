@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
-class EnterNewHabitBox extends StatelessWidget {
+class MyAlertBox extends StatelessWidget {
   final TextEditingController controller;
   final Function()? onSave;
   final Function()? onCancel;
-  const EnterNewHabitBox(
+  final String hintText;
+  const MyAlertBox(
       {super.key,
+      required this.hintText,
       required this.controller,
       required this.onSave,
       required this.onCancel});
@@ -17,7 +19,7 @@ class EnterNewHabitBox extends StatelessWidget {
         controller: controller,
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
-          hintText: "eg. code app",
+          hintText: hintText,
           hintStyle: const TextStyle(color: Colors.white30),
           enabledBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: Colors.white),
