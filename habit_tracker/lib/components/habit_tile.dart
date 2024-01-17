@@ -48,7 +48,7 @@ class HabitTile extends StatelessWidget {
           child: Row(
             children: [
               Checkbox(value: habitCompleted, onChanged: onchanged),
-              Container(child: Text(habitName), width: 230,),
+              Container(child: Text(habitName), width: 210,),
               Icon(Icons.arrow_back_outlined, color: Colors.deepPurple,)
             ],
             
